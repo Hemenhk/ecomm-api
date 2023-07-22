@@ -32,6 +32,11 @@ const productSchema = new mongoose.Schema(
       required: [true, "A product must have ingredients"],
       trim: true,
     },
+    usage: {
+      type: String,
+      required: [true, "A product must have usage"],
+      trim: true,
+    },
     atricleNumber: {
       type: String,
       required: [true, "A product must have an article number"],
