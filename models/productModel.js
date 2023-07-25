@@ -51,6 +51,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       min: [1, "Ratings must be above 1.0"],
       max: [5, "Ratings must be 5.0 or less"],
+      set: val => Math.round(val * 10) / 10
     },
     imageCover: {
       type: String,
@@ -63,6 +64,11 @@ const productSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+productSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "product",
+  localField: "_id",
+});
 
 const Product = mongoose.model("Product", productSchema);
 
