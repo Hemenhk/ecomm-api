@@ -24,7 +24,7 @@ const reviewSchema = new mongoose.Schema(
       max: 5,
     },
     createdAt: {
-      type: Date,
+      type: String,
       default: () => {
         const currentDate = new Date();
 
@@ -49,7 +49,7 @@ const reviewSchema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        const date = ret.createdAt.toISOString();
+        const date = ret.createdAt;
         const year = date.slice(0, 4);
         const month = date.slice(5, 7);
         const day = date.slice(8, 10);
