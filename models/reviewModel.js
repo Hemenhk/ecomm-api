@@ -75,21 +75,13 @@ reviewSchema.post("save", function () {
 });
 
 reviewSchema.pre(/^findOneAnd/, async function (next) {
-  this.r = await this.findOne();
+  this.r = await this.clone().findOne();
   next();
 });
 
 reviewSchema.post(/^findOneAnd/, async function () {
   await this.r.constructor.calcAverageRatings(this.r.product);
 });
-
-// reviewSchema.pre(/^find/, function (next) {
-//   this.populate({
-//     path: "product",
-//     select: "title",
-//   });
-//   next();
-// });
 
 const Review = mongoose.model("Review", reviewSchema);
 module.exports = Review;
