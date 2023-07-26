@@ -32,7 +32,7 @@ const reviewSchema = new mongoose.Schema(
         const month = String(currentDate.getMonth() + 1).padStart(2, "0");
         const day = String(currentDate.getDate()).padStart(2, "0");
 
-        return new Date(`${day}/${month}/${year}`);
+        return new Date(`${year}/${month}/${day}`);
       },
     },
     author: {
@@ -46,7 +46,12 @@ const reviewSchema = new mongoose.Schema(
     },
   },
   {
-    toJSON: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.createdAt = ret.createdAt.toISOString().slice(0, 10);
+      },
+    },
     toObject: { virtuals: true },
   }
 );
