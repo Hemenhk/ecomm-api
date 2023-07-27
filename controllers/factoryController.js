@@ -1,12 +1,5 @@
 const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
-});
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -41,17 +34,9 @@ exports.updateOne = (Model) =>
     });
   });
 
-exports.createOne = (Model, imageField = "imageCover") =>
+exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    if (!req.file) {
-      return next(new Error("Image file not provided."));
-    }
-    const result = await cloudinary.uploader.upload(req.file.path);
-
-    const doc = await Model.create({
-      ...req.body,
-      [imageField]: result.secure_url,
-    });
+    const doc = await Model.create(req.body);
 
     res.status(201).json({
       status: "success",
